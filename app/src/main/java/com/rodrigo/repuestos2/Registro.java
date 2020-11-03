@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.rodrigo.repuestos2.BaseDatos.ConexionSQLiteHelper;
+import com.rodrigo.repuestos2.BaseDatos.Utilidades;
+
 import java.util.ArrayList;
 
 public class Registro extends AppCompatActivity {
@@ -29,7 +32,12 @@ public class Registro extends AppCompatActivity {
     private boolean ConfirmacionOk = false;
     private boolean PhoneOk = false;
     private boolean esVisible;
-    static ArrayList<Usuario> listaUsuarios = new ArrayList<>();
+    static ArrayList<Usuario> arrayUsuarios;
+    static Usuario usuario;
+    ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this,null,null,1);
+    static ArrayAdapter<Usuario> adaptadorListView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +54,9 @@ public class Registro extends AppCompatActivity {
         btnCancelar = findViewById(R.id.btnCancelar);
         //visible1 = findViewById(R.id.visible1);
         //visible2 = findViewById(R.id.visible2);
+
+        arrayUsuarios = new ArrayList<>();
+        adaptadorListView = new ArrayAdapter<>(Registro.this,android.R.layout.simple_list_item_1,arrayUsuarios);
 
         ArrayAdapter<CharSequence> adapter =
                 ArrayAdapter.createFromResource(Registro.this,R.array.Genero_array,
@@ -187,8 +198,6 @@ public class Registro extends AppCompatActivity {
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-         /*       Toast.makeText(Registro.this, "Registrado",
-                        Toast.LENGTH_SHORT).show();
                 Integer Id = Integer.parseInt(txtId.getText().toString());
                 String Nombre = txtNombre.getText().toString();
                 String Apellido = txtApellido.getText().toString();
@@ -198,11 +207,13 @@ public class Registro extends AppCompatActivity {
                 String Telefono = txtTelefono.getText().toString();
                 String Genero = spinner.getSelectedItem().toString();
 
-                Usuario usuario = new Usuario(Id,Nombre, Apellido, Correo, Contrasenia,
+               /* Usuario usuario = new Usuario(Id,Nombre, Apellido, Correo, Contrasenia,
                         RContrasenia, Telefono, Genero);
                 listaUsuarios.add(usuario);*/
-                RegistrarUsusarios();
-                LimpiarCajas();
+                RegistrarUsuarios(Id,Nombre,Apellido,Correo,Contrasenia,RContrasenia,Telefono,Genero);
+                //Revisar_Registro.obtenerClientes();
+                Intent intent = new Intent(Registro.this,Revisar_Registro.class);
+                startActivity(intent);
             }
         });
 
@@ -257,25 +268,25 @@ public class Registro extends AppCompatActivity {
         txtTelefono.setText(" ");
     }
 
-    private void RegistrarUsusarios() {
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this,"db_Usuario",null,1);
-
+    private void RegistrarUsuarios(int Id, String Nombre , String Apellido , String Correo ,
+           String Contrasenia,String RContrasenia,String Telefono,String Genero) {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Utilidades.CAMPO_ID,txtId.getText().toString());
-        values.put(Utilidades.CAMPO_NOMBRE,txtNombre.getText().toString());
-        values.put(Utilidades.CAMPO_APELLIDO,txtApellido.getText().toString());
-        values.put(Utilidades.CAMPO_CORREO,txtCorreo.getText().toString());
-        values.put(Utilidades.CAMPO_CONTRASENIA,txtContraseña.getText().toString());
-        values.put(Utilidades.CAMPO_RCONTRASENIA,txtRContraseña.getText().toString());
-        values.put(Utilidades.CAMPO_TELEFONO,txtTelefono.getText().toString());
-        values.put(Utilidades.CAMPO_GENEROO,spinner.getSelectedItem().toString());
+        values.put(Utilidades.CAMPO_ID,Id);
+        values.put(Utilidades.CAMPO_NOMBRE,Nombre);
+        values.put(Utilidades.CAMPO_APELLIDO,Apellido);
+        values.put(Utilidades.CAMPO_CORREO,Correo);
+        values.put(Utilidades.CAMPO_CONTRASENIA,Contrasenia);
+        values.put(Utilidades.CAMPO_RCONTRASENIA,RContrasenia);
+        values.put(Utilidades.CAMPO_TELEFONO,Telefono);
+        values.put(Utilidades.CAMPO_GENEROO,Genero);
 
-        Long idResultante = db.insert(Utilidades.TABLA_USUARIO,Utilidades.CAMPO_ID,values);
+        db.insert(Utilidades.TABLA_USUARIO, Utilidades.CAMPO_ID,values);
 
-        Toast.makeText(Registro.this,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+        Toast.makeText(Registro.this,"Usuario Registrado ",Toast.LENGTH_SHORT).show();
         db.close();
+
 
     }
 }

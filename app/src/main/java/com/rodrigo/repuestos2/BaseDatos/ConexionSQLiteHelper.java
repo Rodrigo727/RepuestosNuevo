@@ -1,4 +1,4 @@
-package com.rodrigo.repuestos2;
+package com.rodrigo.repuestos2.BaseDatos;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,8 +7,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class ConexionSQLiteHelper extends SQLiteOpenHelper {
+
     public ConexionSQLiteHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+        super(context, "db_Usuario", null, 1);
     }
 
     @Override

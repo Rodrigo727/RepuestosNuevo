@@ -1,7 +1,7 @@
 package com.rodrigo.repuestos2;
 
 public class Usuario {
-    private Integer Id;
+    private int Id;
     private String Nombre;
     private String Apellido;
     private String Correo;
@@ -10,7 +10,7 @@ public class Usuario {
     private String Telefono;
     private String Genero;
 
-    public Usuario(Integer id, String nombre, String apellido, String correo, String contrasenia, String RContrasenia, String telefono, String genero) {
+    public Usuario(int id, String nombre, String apellido, String correo, String contrasenia, String RContrasenia, String telefono, String genero) {
         Id = id;
         Nombre = nombre;
         Apellido = apellido;
@@ -21,11 +21,11 @@ public class Usuario {
         Genero = genero;
     }
 
-    public Integer getId() {
+    public int getId() {
         return Id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         Id = id;
     }
 
@@ -83,5 +83,19 @@ public class Usuario {
 
     public void setGenero(String genero) {
         Genero = genero;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "Id=" + Id +
+                ", Nombre='" + Nombre + '\'' +
+                ", Apellido='" + Apellido + '\'' +
+                ", Correo='" + Correo + '\'' +
+                ", Contrasenia='" + Contrasenia + '\'' +
+                ", RContrasenia='" + RContrasenia + '\'' +
+                ", Telefono='" + Telefono + '\'' +
+                ", Genero='" + Genero + '\'' +
+                '}';
     }
 }
