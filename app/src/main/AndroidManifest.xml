@@ -15,8 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Actualizar"></activity>
-        <activity android:name=".Revisar_Registro" />
         <activity android:name=".Registro" />
         <activity android:name=".Inicio_Sesion">
             <intent-filter>

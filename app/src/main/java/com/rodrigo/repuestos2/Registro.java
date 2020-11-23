@@ -25,17 +25,15 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class Registro extends AppCompatActivity {
-    EditText txtId, txtNombre, txtApellido, txtCorreo, txtContraseña, txtRContraseña, txtTelefono;
+    EditText  txtNombre, txtApellido, txtCorreo, txtContraseña, txtRContraseña, txtTelefono;
     Spinner spinner;
     Button btnRegistrar, btnCancelar;
-    //ImageButton visible1, visible2;
     private boolean NombreOk = false;
     private boolean ApellidoOk = false;
     private boolean EmailOk = false;
     private boolean PasswordOk = false;
     private boolean ConfirmacionOk = false;
     private boolean PhoneOk = false;
-    private boolean esVisible;
     static ArrayList<Usuario> arrayUsuarios;
     static Usuario usuario;
     static ArrayAdapter<Usuario> adaptadorListView;
@@ -47,7 +45,6 @@ public class Registro extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
-        txtId = findViewById(R.id.txtId);
         txtNombre = findViewById(R.id.txtNombreProducto);
         txtApellido = findViewById(R.id.txtApellido);
         txtCorreo = findViewById(R.id.txtCorreo);
@@ -57,9 +54,7 @@ public class Registro extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         btnRegistrar = findViewById(R.id.btnRegistrar);
         btnCancelar = findViewById(R.id.btnCancelar);
-        //visible1 = findViewById(R.id.visible1);
-        //visible2 = findViewById(R.id.visible2);
-        conectarFirebase();
+        conectarFirebase();//hola c:
 
         arrayUsuarios = new ArrayList<>();
         adaptadorListView = new ArrayAdapter<>(Registro.this,android.R.layout.simple_list_item_1,arrayUsuarios);
@@ -165,10 +160,10 @@ public class Registro extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (PasswordOk == ConfirmacionOk){
-                    txtRContraseña.setError("Contraseña no coinside");
+                if (charSequence.length() < 8){
+                    txtRContraseña.setError("Contraseña Muy Corta");
                     ConfirmacionOk = false;
-                }else{
+                }else {
                     ConfirmacionOk = true;
                 }
             }
@@ -204,7 +199,7 @@ public class Registro extends AppCompatActivity {
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (txtContraseña.getText().equals(txtRContraseña.getText())) {
+                if (txtContraseña.getText().toString().equals(txtRContraseña.getText().toString())) {
                 String Id = UUID.randomUUID().toString();
                 String Nombre = txtNombre.getText().toString().trim();
                 String Apellido = txtApellido.getText().toString().trim();
@@ -216,7 +211,9 @@ public class Registro extends AppCompatActivity {
                 insertarUsuario(usuario);
                 LimpiarCajas();
             }else {
-                    //Error
+                    mensajeToast("Error Datos Invalidos");
+                    txtContraseña.setText("");
+                    txtRContraseña.setText("");
                 }
             }
         });
@@ -232,15 +229,14 @@ public class Registro extends AppCompatActivity {
     }
 
     private void LimpiarCajas() {
-        txtNombre.setText(" ");
-        txtApellido.setText(" ");
-        txtCorreo.setText(" ");
-        txtContraseña.setText(" ");
-        txtRContraseña.setText(" ");
-        txtTelefono.setText(" ");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtCorreo.setText("");
+        txtContraseña.setText("");
+        txtRContraseña.setText("");
+        txtTelefono.setText("");
         spinner.setSelection(0);
     }
-
     public void conectarFirebase(){
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
@@ -255,6 +251,9 @@ public class Registro extends AppCompatActivity {
                 }
             });
         }
+    }
+    public void mensajeToast(String mensaje){
+        Toast.makeText(this,mensaje,Toast.LENGTH_LONG).show();
     }
 }
 

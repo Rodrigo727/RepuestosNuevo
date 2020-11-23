@@ -126,7 +126,7 @@ public class Inicio_Sesion extends AppCompatActivity {
     public void conectarFirebase(){
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
-        Toast.makeText(this,"Conectado a firebase",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"Conectado a firebase",Toast.LENGTH_LONG).show();
     }
     public void mensajeToast(String mensaje){
         Toast.makeText(this,mensaje,Toast.LENGTH_LONG).show();
