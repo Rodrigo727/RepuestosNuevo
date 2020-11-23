@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "304735030290",
+    "firebase_url": "https://repuestos2-72126.firebaseio.com",
+    "project_id": "repuestos2-72126",
+    "storage_bucket": "repuestos2-72126.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:304735030290:android:f017677ef5cfda29cedccb",
+        "android_client_info": {
+          "package_name": "com.rodrigo.repuestos2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "304735030290-ihs97g8cqf7boai7dksq0mti7ee0ucd2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvZKJh8dWsg1mNHvEdeRqYfpS4EKfqdrk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "304735030290-ihs97g8cqf7boai7dksq0mti7ee0ucd2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
