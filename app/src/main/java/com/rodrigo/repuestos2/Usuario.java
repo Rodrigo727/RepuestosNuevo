@@ -1,31 +1,32 @@
 package com.rodrigo.repuestos2;
 
 public class Usuario {
-    private int Id;
+    private String Id;
     private String Nombre;
     private String Apellido;
     private String Correo;
     private String Contrasenia;
-    private String RContrasenia;
     private String Telefono;
     private String Genero;
 
-    public Usuario(int id, String nombre, String apellido, String correo, String contrasenia, String RContrasenia, String telefono, String genero) {
+    public Usuario() {
+    }
+
+    public Usuario(String id, String nombre, String apellido, String correo, String contrasenia, String telefono, String genero) {
         Id = id;
         Nombre = nombre;
         Apellido = apellido;
         Correo = correo;
         Contrasenia = contrasenia;
-        this.RContrasenia = RContrasenia;
         Telefono = telefono;
         Genero = genero;
     }
 
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
     }
 
@@ -61,13 +62,6 @@ public class Usuario {
         Contrasenia = contrasenia;
     }
 
-    public String getRContrasenia() {
-        return RContrasenia;
-    }
-
-    public void setRContrasenia(String RContrasenia) {
-        this.RContrasenia = RContrasenia;
-    }
 
     public String getTelefono() {
         return Telefono;
@@ -93,7 +87,6 @@ public class Usuario {
                 ", Apellido='" + Apellido + '\'' +
                 ", Correo='" + Correo + '\'' +
                 ", Contrasenia='" + Contrasenia + '\'' +
-                ", RContrasenia='" + RContrasenia + '\'' +
                 ", Telefono='" + Telefono + '\'' +
                 ", Genero='" + Genero + '\'' +
                 '}';

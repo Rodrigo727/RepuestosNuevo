@@ -1,5 +1,7 @@
 package com.rodrigo.repuestos2;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
@@ -15,10 +17,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.rodrigo.repuestos2.BaseDatos.ConexionSQLiteHelper;
-import com.rodrigo.repuestos2.BaseDatos.Utilidades;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Registro extends AppCompatActivity {
     EditText txtId, txtNombre, txtApellido, txtCorreo, txtContraseña, txtRContraseña, txtTelefono;
@@ -34,8 +38,9 @@ public class Registro extends AppCompatActivity {
     private boolean esVisible;
     static ArrayList<Usuario> arrayUsuarios;
     static Usuario usuario;
-    ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this,null,null,1);
     static ArrayAdapter<Usuario> adaptadorListView;
+    FirebaseDatabase database;
+    DatabaseReference reference;
 
 
     @Override
@@ -54,6 +59,7 @@ public class Registro extends AppCompatActivity {
         btnCancelar = findViewById(R.id.btnCancelar);
         //visible1 = findViewById(R.id.visible1);
         //visible2 = findViewById(R.id.visible2);
+        conectarFirebase();
 
         arrayUsuarios = new ArrayList<>();
         adaptadorListView = new ArrayAdapter<>(Registro.this,android.R.layout.simple_list_item_1,arrayUsuarios);
@@ -198,22 +204,20 @@ public class Registro extends AppCompatActivity {
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer Id = Integer.parseInt(txtId.getText().toString());
-                String Nombre = txtNombre.getText().toString();
-                String Apellido = txtApellido.getText().toString();
-                String Correo = txtCorreo.getText().toString();
-                String Contrasenia = txtContraseña.getText().toString();
-                String RContrasenia = txtRContraseña.getText().toString();
-                String Telefono = txtTelefono.getText().toString();
+                if (txtContraseña.getText().equals(txtRContraseña.getText())) {
+                String Id = UUID.randomUUID().toString();
+                String Nombre = txtNombre.getText().toString().trim();
+                String Apellido = txtApellido.getText().toString().trim();
+                String Correo = txtCorreo.getText().toString().trim();
+                String Contrasenia = txtContraseña.getText().toString().trim();
+                String Telefono = txtTelefono.getText().toString().trim();
                 String Genero = spinner.getSelectedItem().toString();
-
-               /* Usuario usuario = new Usuario(Id,Nombre, Apellido, Correo, Contrasenia,
-                        RContrasenia, Telefono, Genero);
-                listaUsuarios.add(usuario);*/
-                RegistrarUsuarios(Id,Nombre,Apellido,Correo,Contrasenia,RContrasenia,Telefono,Genero);
-                //Revisar_Registro.obtenerClientes();
-                Intent intent = new Intent(Registro.this,Revisar_Registro.class);
-                startActivity(intent);
+                Usuario usuario = new Usuario(Id, Nombre, Apellido, Correo, Contrasenia, Telefono, Genero);
+                insertarUsuario(usuario);
+                LimpiarCajas();
+            }else {
+                    //Error
+                }
             }
         });
 
@@ -225,38 +229,6 @@ public class Registro extends AppCompatActivity {
             }
         });
 
-
-        /*visible1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!esVisible) {
-                    txtContraseña.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    esVisible = true;
-
-                }
-                else {
-                    txtContraseña.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    esVisible = false;
-                    visible1.setBackgroundResource(R.drawable.novisible);
-                }
-            }
-        });
-
-        visible2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!esVisible) {
-                    txtRContraseña.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    esVisible = true;
-
-                }
-                else {
-                    txtRContraseña.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    esVisible = false;
-                    visible2.setBackgroundResource(R.drawable.novisible);
-                }
-            }
-        });*/
     }
 
     private void LimpiarCajas() {
@@ -266,27 +238,25 @@ public class Registro extends AppCompatActivity {
         txtContraseña.setText(" ");
         txtRContraseña.setText(" ");
         txtTelefono.setText(" ");
+        spinner.setSelection(0);
     }
 
-    private void RegistrarUsuarios(int Id, String Nombre , String Apellido , String Correo ,
-           String Contrasenia,String RContrasenia,String Telefono,String Genero) {
-        SQLiteDatabase db = conn.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(Utilidades.CAMPO_ID,Id);
-        values.put(Utilidades.CAMPO_NOMBRE,Nombre);
-        values.put(Utilidades.CAMPO_APELLIDO,Apellido);
-        values.put(Utilidades.CAMPO_CORREO,Correo);
-        values.put(Utilidades.CAMPO_CONTRASENIA,Contrasenia);
-        values.put(Utilidades.CAMPO_RCONTRASENIA,RContrasenia);
-        values.put(Utilidades.CAMPO_TELEFONO,Telefono);
-        values.put(Utilidades.CAMPO_GENEROO,Genero);
-
-        db.insert(Utilidades.TABLA_USUARIO, Utilidades.CAMPO_ID,values);
-
-        Toast.makeText(Registro.this,"Usuario Registrado ",Toast.LENGTH_SHORT).show();
-        db.close();
-
-
+    public void conectarFirebase(){
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference();
+        Toast.makeText(this,"Conectado a firebase",Toast.LENGTH_LONG).show();
+}
+    public void insertarUsuario(Usuario u){
+        if(u != null){
+            reference.child("usuarios").child(u.getId()).setValue(u, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                    Toast.makeText(getApplicationContext(), "Usuario creado",Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 }
+
+
+
