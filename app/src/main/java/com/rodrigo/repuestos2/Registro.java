@@ -54,14 +54,12 @@ public class Registro extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         btnRegistrar = findViewById(R.id.btnRegistrar);
         btnCancelar = findViewById(R.id.btnCancelar);
-        conectarFirebase();//hola c:
+        conectarFirebase();
 
-        arrayUsuarios = new ArrayList<>();
-        adaptadorListView = new ArrayAdapter<>(Registro.this,android.R.layout.simple_list_item_1,arrayUsuarios);
+        //arrayUsuarios = new ArrayList<>();
+        //adaptadorListView = new ArrayAdapter<>(Registro.this,android.R.layout.simple_list_item_1,arrayUsuarios);
 
-        ArrayAdapter<CharSequence> adapter =
-                ArrayAdapter.createFromResource(Registro.this,R.array.Genero_array,
-                        android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(Registro.this,R.array.genero_array,android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapter);
 
         txtNombre.addTextChangedListener(new TextWatcher() {
